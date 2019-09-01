@@ -128,7 +128,7 @@ class ListApp extends Component {
      return (
        
        <div className="general">
-          {/*<PanelHistorico className="panelLeft" items="" />*/}
+          <PanelHistorico className="panelLeft" />
           {finish && <h3> fin del juego </h3>}
           
           {
@@ -137,7 +137,7 @@ class ListApp extends Component {
           }
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
-          {/*<PanelHistorico className="panelRight" items="" />*/}
+          <PanelHistorico className="panelRight" />
       </div>
       
     );

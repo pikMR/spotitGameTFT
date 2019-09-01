@@ -4,24 +4,25 @@ class PanelHistorico extends Component {
 
 	constructor(props) {
       super(props);
-      this.state = {
+      /*this.state = {
       	items : []
-      }
+      }*/
     }
 
-    componentWillReceiveProps(nextProps) {
-    	this.setState((state,props) => ({
-    		items: state.items.push(props.item)
-    	}));	
-    }
+   /* componentWillReceiveProps(nextProps) {
+        if(this.props.items){
+            this.setState((state,props) => ({
+                items: state.items.push(props.item)
+            }));
+        }	
+    }*/
 
     render() {
-    	const { items } = this.state;
-    	const { className } = this.props;
+    	const { className,items } = this.props;
         return (
         	<div className={className}>
         		{
-        			items &&
+        			(items && items.length > 0) &&
         			<ul>
         			{items.map(
         			(elemento,index) => (<li key={elemento.id}><img src={elemento.imagen} key={elemento.id + "_img"} /></li>)

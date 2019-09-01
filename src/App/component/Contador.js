@@ -41,7 +41,7 @@ class Contador extends Component {
     }
   }
   render(){
-    return <div style={{width: "100%", textAlign: "center"}}>
+    return <div id="contador" style={{width: "100%", textAlign: "center"}}>
       <h3>{this.state.seconds}...</h3>
     </div>
   }
