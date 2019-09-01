@@ -37,7 +37,7 @@ class ShowRound extends Component {
                         <ListGroupItem key={id++} className="result-array">
                             {round.map(
                                 (elemento, index) => (
-                                    <img src={elemento.imagen} key={id++} width="100" height="100" alt="" className="result-array-item third-item morph" onClick={this.nextRound}/>
+                                    <img src={elemento.imagen} alt={elemento.id} key={id++} width="100" height="100" className="result-array-item third-item morph" onClick={this.nextRound}/>
                                 )
                             )}
                         </ListGroupItem>
@@ -47,7 +47,7 @@ class ShowRound extends Component {
                         <ListGroupItem key={id++} className="result-array">
                             {roundrival.map(
                                 (elemento, index) => (
-                                    <img src={elemento.imagen} key={id++} width="100" height="100" alt="" className="result-array-item third-item"/>
+                                    <img src={elemento.imagen} alt={elemento.id} key={id++} width="100" height="100" className="result-array-item third-item"/>
                                 )
                             )}
                         </ListGroupItem>

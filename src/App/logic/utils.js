@@ -17,6 +17,7 @@ while (ctr > 0) {
     return arra1;
 }
 
+// dado un array de arrays te mete los datos en uno solo
 export function PasarElementos(arreglo){
     let i = 0;
     let resultado = [];
@@ -39,5 +40,7 @@ export function ArrayIsDefined(arreglo){
 }
 
 export function BuscaElementoArrayPorId(id,array){
-    return;
+    return array.find(function(elemento){
+        return elemento.id == id;
+    });
 }
