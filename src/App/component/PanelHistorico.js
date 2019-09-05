@@ -1,31 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 
+let id = new Date();
 class PanelHistorico extends Component {
 
-	constructor(props) {
-      super(props);
-      /*this.state = {
-      	items : []
-      }*/
-    }
+	constructor(props) 
+  {
+     super(props);
+     this.state = { seleccionados : [] }
+  }
 
-   /* componentWillReceiveProps(nextProps) {
-        if(this.props.items){
-            this.setState((state,props) => ({
-                items: state.items.push(props.item)
-            }));
-        }	
-    }*/
+  componentWillReceiveProps(nextProps) {
+    this.setState( {seleccionados : [...nextProps.arrayChamps,nextProps.item]} );
+  }
+
 
     render() {
-    	const { className,items } = this.props;
+    	const { className,arrayChamps } = this.props;
+      const { seleccionados } = this.state;
         return (
         	<div className={className}>
         		{
-        			(items && items.length > 0) &&
+        			((seleccionados) && (seleccionados.length>0)) &&
         			<ul>
-        			{items.map(
-        			(elemento,index) => (<li key={elemento.id}><img src={elemento.imagen} key={elemento.id + "_img"} /></li>)
+        			{Array.from(new Set(this.state.seleccionados)).map(
+        			(elemento,index) => (<li key={id++}><img src={elemento.imagen} /></li>)
         			)}
         			</ul>
         		}
@@ -33,5 +31,10 @@ class PanelHistorico extends Component {
         );
     }
 }
+
+PanelHistorico.propTypes = {
+    arrayChamps: PropTypes.array.isRequired
+}
+
 
 export default PanelHistorico;

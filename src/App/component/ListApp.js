@@ -25,8 +25,9 @@ class ListApp extends Component {
             errorMessage: '',
             showSpinner: false,
             finish:false,
-            seleccionadosUser:[],
-            seleccionadosCpu:[]
+            seleccionadoUser:{},
+            seleccionadoCpu:{},
+            selectedArrayUser:[]
         };
     }
 
@@ -102,7 +103,8 @@ class ListApp extends Component {
       let _id_selected = selected.currentTarget.alt;
       let _elemento_panel = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
       this.resSeleccionadosUser.push(_elemento_panel);
-      this.setState({seleccionados:this.resSeleccionadosUser});
+      //this.setState({seleccionadosUser:this.resSeleccionadosUser});
+      this.setState({seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser});
     }
 
     let _r1 = this.GetRandomRow(data,true);
@@ -151,28 +153,7 @@ class ListApp extends Component {
     );
   }
 
-
-  render() {
-        const { resActivo,finish,seleccionados } = this.state;
-     return (
-       
-       <div className="general">
-          {/*<PanelHistorico className="panelLeft" items={resActivo} />*/}
-          {finish && <h3> fin del juego </h3>}
-          
-          {
-            resActivo && resActivo.length>1 && !finish &&
-              <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} />
-          }
-          <Spinner show={this.state.showSpinner} />
-          <Warning show={this.state.showError} message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
-          { /*<PanelHistorico className="panelRight"/> */}
-      </div>
-      
-    );
-   }
-
-   /*
+     /*
     Forma los elementos [image,id,clase] de 4 en 4 (round), en 4 arrays.
     resParte contiene los 4 arrays.
     empezamos por el primer array obteniendo el round (2 selecciones: user y cpu),
@@ -196,6 +177,25 @@ class ListApp extends Component {
     }, 0);
   }
 
+  render() {
+        const { resActivo,finish,seleccionadoUser, selectedArrayUser } = this.state;
+     return (
+       
+       <div className="general">
+          <PanelHistorico className="panelLeft" item={seleccionadoUser} arrayChamps={selectedArrayUser} />
+          {finish && <h3> fin del juego </h3>}
+          
+          {
+            resActivo && resActivo.length>1 && !finish &&
+              <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} />
+          }
+          <Spinner show={this.state.showSpinner} />
+          <Warning show={this.state.showError} message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
+          { /*<PanelHistorico className="panelRight"/> */}
+      </div>
+      
+    );
+   }
 }
 
 export default ListApp;
