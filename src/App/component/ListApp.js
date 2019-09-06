@@ -119,7 +119,8 @@ class ListApp extends Component {
         {
           imagen: _req,
           id: json.id,
-          clase: json.class
+          clase: json.class,
+          puntos:0
         } 
         return newItem;
       })

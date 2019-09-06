@@ -6,24 +6,33 @@ class PanelHistorico extends Component {
 	constructor(props) 
   {
      super(props);
-     this.state = { seleccionados : [] }
+     this.state = { seleccionados : [], puntuacion: 0 }
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState( {seleccionados : [...nextProps.arrayChamps,nextProps.item]} );
+    let _select_elemento = nextProps.arrayChamps.find(champ => champ.id === nextProps.item.id);
+    if(_select_elemento){
+      _select_elemento.puntos++;
+    }
+    this.setState(
+      {
+        seleccionados : [...nextProps.arrayChamps,nextProps.item].sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1)
+      }
+    );
   }
 
 
     render() {
     	const { className,arrayChamps } = this.props;
-      const { seleccionados } = this.state;
+      const { seleccionados,puntuacion } = this.state;
         return (
         	<div className={className}>
         		{
         			((seleccionados) && (seleccionados.length>0)) &&
         			<ul>
-        			{Array.from(new Set(this.state.seleccionados)).map(
-        			(elemento,index) => (<li key={id++}><img src={elemento.imagen} /></li>)
+              <div key="_puntuacion" className="puntuacionFinal">{puntuacion}</div>
+        			{Array.from(new Set(seleccionados)).map(
+        			(elemento,index) => (<li key={id++}><img src={elemento.imagen} /><div className="puntuacionbox">{elemento.puntos}</div></li>)
         			)}
         			</ul>
         		}
