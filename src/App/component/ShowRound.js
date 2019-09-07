@@ -27,13 +27,13 @@ class ShowRound extends Component {
         const { loading,round,roundrival } = this.state;
         return (
         <div className="container">
-          {(!round && !roundrival) ? <h3> WELLCOME </h3> : 
+          {(!round && !roundrival) ? <h3> Fin de la partida </h3> : 
             <Contador seconds={3} parentCallbackTimer={this.nextRound} ref="contador"/>
           }
           
             {
                 <ListGroup className="output-section">
-                    {!round ? <div> Cargando ... </div> :
+                    {!round ? <div> Puntuación total player A : </div> :
                         <ListGroupItem key={id++} className="result-array">
                             {round.map(
                                 (elemento, index) => (
@@ -43,7 +43,7 @@ class ShowRound extends Component {
                         </ListGroupItem>
                         }
     
-                    {!roundrival ? <div> Cargando ... </div> :
+                    {!roundrival ? <div> Puntuación total player B : </div> :
                         <ListGroupItem key={id++} className="result-array">
                             {roundrival.map(
                                 (elemento, index) => (

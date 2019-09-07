@@ -14,13 +14,52 @@
 }
 
 .puntuacionbox {
+ /*   float: right;
+    position: relative;
+    border: 6px solid;
+    border-color: cornflowerblue;
+    padding: 6px;
+    font-size: x-large;*/
+}
+
+.contentFlex{
+     display: flex;
+    position: relative;
     float: right;
+    flex-direction: column;
+}
+
+.contentFlexNum{
+   float: right;
     position: relative;
     border: 6px solid;
     border-color: cornflowerblue;
     padding: 6px;
     font-size: x-large;
 }
+
+.contentFlexNum_orange{
+  background-color: orange;
+  color: navy;
+}
+
+.contentFlexNum_red{
+  background-color: red;
+  color: white;
+}
+
+.contentFlexChamp{
+  border-left: dotted;
+}
+
+.claseChamp{
+    float: right;
+    position: relative;
+    border: 6px solid;
+    border-color: orange;
+}
+
+
 
 .puntuacionFinal{
     text-align: center;

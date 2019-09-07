@@ -27,8 +27,10 @@ class ListApp extends Component {
             finish:false,
             seleccionadoUser:{},
             seleccionadoCpu:{},
-            selectedArrayUser:[]
+            selectedArrayUser:[],
         };
+
+       //this.handlerPuntuacion = this.handlerPuntuacion.bind(this);
     }
 
     /*
@@ -42,13 +44,8 @@ class ListApp extends Component {
 
     if(this.cuentaActivo === -1)
     {
-      let ultima_tanda = this.GetRandomRounds(selected,this.resParte);
-      if(this.resParte.length>0){
-        return ultima_tanda;
-      }else{
-        this.setState({finish:true});
-        return;
-      }
+      // no hacer setstate(finish) aquí, rompe el calculo de puntuación en el re-render
+      return this.GetRandomRounds(selected,this.resParte);
     }
       
     let cactivo = (this.cuentaActivo+1) % 4;
@@ -103,7 +100,6 @@ class ListApp extends Component {
       let _id_selected = selected.currentTarget.alt;
       let _elemento_panel = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
       this.resSeleccionadosUser.push(_elemento_panel);
-      //this.setState({seleccionadosUser:this.resSeleccionadosUser});
       this.setState({seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser});
     }
 
@@ -184,12 +180,11 @@ class ListApp extends Component {
        
        <div className="general">
           <PanelHistorico className="panelLeft" item={seleccionadoUser} arrayChamps={selectedArrayUser} />
-          {finish && <h3> fin del juego </h3>}
-          
           {
             resActivo && resActivo.length>1 && !finish &&
               <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} />
           }
+          {finish && <h3> fin del juego </h3>}
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
           { /*<PanelHistorico className="panelRight"/> */}

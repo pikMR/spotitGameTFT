@@ -44,3 +44,7 @@ export function BuscaElementoArrayPorId(id,array){
         return elemento.id == id;
     });
 }
+
+export function IsEmptyJson(obj){
+    return (Object.entries(obj).length === 0 && obj.constructor === Object);
+}
