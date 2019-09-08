@@ -5,7 +5,6 @@ import PostData from '../../data/items-test.json';
 import { UtilShuffleArray , PasarElementos, BuscaElementoArrayPorId } from '../logic/utils';
 import ShowRound from './ShowRound';
 import PanelHistorico from './PanelHistorico';
-import Modal from './Modal';
 
 class ListApp extends Component {
     resSeleccionadosUser = [];
@@ -19,7 +18,6 @@ class ListApp extends Component {
         super(props);
 
         this.state = {
-            selectedChamp:0,
             loading:true,
             resActivo:[],
             showError: false,
@@ -178,7 +176,7 @@ class ListApp extends Component {
       let _id_selected = selected.currentTarget.alt;
       let _elemento_panel = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
       this.resSeleccionadosUser.push(_elemento_panel);
-      this.setState({seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser,puntosUsuario:this.puntosUsuario,noHistorico:false});
+      this.setState({resActivo: this.resParte, seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser,puntosUsuario:this.puntosUsuario,noHistorico:false});
     }
 
     let _r1 = this.GetRandomRow(data,true);
@@ -187,25 +185,11 @@ class ListApp extends Component {
     return [_r1,_r2];
   }
 
-    openModalHandler = () => {
-        this.setState({
-            isShowing: true
-        });
-    }
-
-    closeModalHandler = () => {
-        this.setState({
-            isShowing: false
-        });
-    }
-
   render() {
         const { resActivo,finish,seleccionadoUser, selectedArrayUser,puntosUsuario, noHistorico } = this.state;
-     return (
-       
-       <div className="general">
-       
 
+     return (
+       <div className="general">
        {  
           <PanelHistorico 
           className="panelLeft" 
@@ -216,18 +200,8 @@ class ListApp extends Component {
           />
        }
        {
-         resActivo && resActivo.length>1 &&
-         <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} data={puntosUsuario} />
-       }
-          
-       { 
-        (resActivo.length===1) &&
-        <Modal
-         className="modal"
-         show={true}
-         close={this.closeModalHandler}>
-             Maybe aircrafts fly very high because they don't want to be seen in plane sight?
-        </Modal>
+         (resActivo && resActivo.length>1) &&
+         <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} data={puntosUsuario} selecteds={selectedArrayUser} />
        }
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
@@ -236,9 +210,6 @@ class ListApp extends Component {
           { /*<PanelHistorico className="panelRight"/> */}
 
       </div>
-
-
-      
     );
    }
 }

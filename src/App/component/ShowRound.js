@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {ListGroup, ListGroupItem} from 'react-bootstrap';
 import { UtilShuffleArray } from '../logic/utils';
 import Contador from './Contador';
+import Modal from './Modal';
 
 let id = new Date();
 
@@ -17,14 +18,13 @@ class ShowRound extends Component {
         {
                 return ({
                     round: this.props.items[0],
-                    roundrival: this.props.items[1],
-                    loading: false
+                    roundrival: this.props.items[1]
                 }); 
         }
     }
 
     render(){
-        const { loading,round,roundrival } = this.state;
+        const { round,roundrival } = this.state;
         return (
         <div className="container">
           {(!round && !roundrival) ? <h3> Fin de la partida </h3> : 
@@ -53,8 +53,18 @@ class ShowRound extends Component {
                         </ListGroupItem>
                     }
                 </ListGroup>
-
+                
             }
+            {
+                (!round && !roundrival) &&
+                <Modal
+              className="modal"
+              selecteds = {this.props.selecteds}
+              >
+              Maybe aircrafts fly very high because they don't want to be seen in plane sight?
+            </Modal>    
+            }
+            
         </div>
         );
     }
