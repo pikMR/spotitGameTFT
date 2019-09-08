@@ -33,7 +33,7 @@ class ShowRound extends Component {
           
             {
                 <ListGroup className="output-section">
-                    {!round ? <div> Puntuación total player A : </div> :
+                    {!round ? <div> Puntuación total player A : {this.props.data} </div> :
                         <ListGroupItem key={id++} className="result-array">
                             {round.map(
                                 (elemento, index) => (
@@ -62,7 +62,7 @@ class ShowRound extends Component {
     nextRound = (e) => {
         let _activo = this.props.parentCallbackSelected(e);
         if(_activo){
-            this.setState({ round: _activo[0] , roundrival: _activo[1] });
+        this.setState({ round: _activo[0] , roundrival: _activo[1] });
             if(this.refs.contador){
                 this.refs.contador.reset(e);
             }

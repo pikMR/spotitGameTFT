@@ -11,13 +11,16 @@ class PanelHistorico extends Component {
 	constructor(props) 
   {
      super(props);
-     this.state = { seleccionados : [] , puntuacion: 0}
+     this.state = { seleccionados : [] , puntuacion: 0, finish: false}
   }
 
   puntuaRepetido = (_puntuacion) => (_puntuacion * _puntuacion); 
 
   componentWillReceiveProps(nextProps) {
-    let elemento = nextProps.item;
+    // evitamos bucle con stop
+    if(!nextProps.stop){
+
+      let elemento = nextProps.item;
     if(!IsEmptyJson(elemento))
     {          
       let _num_elemento_repetido = elemento.puntos + 1;
@@ -48,17 +51,15 @@ class PanelHistorico extends Component {
       }
 
       nextProps.arrayChamps.find(champ => champ.id === elemento.id).puntos++;
-      
-      this.setState(
-        {
-          seleccionados : [...nextProps.arrayChamps].sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1),
-          puntuacion: this.puntuacion
-        }
-      );
+
+        this.setState(
+          {
+            seleccionados : [...nextProps.arrayChamps].sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1),
+            puntuacion: this.puntuacion
+          }, ()=>{nextProps.callback(this.puntuacion)})
+      }
     }
   }
-
-
     render() {
     	const { className,arrayChamps } = this.props;
       const { seleccionados,puntuacion } = this.state;
@@ -91,7 +92,8 @@ class PanelHistorico extends Component {
 }
 
 PanelHistorico.propTypes = {
-    arrayChamps: PropTypes.array.isRequired
+    arrayChamps: PropTypes.array.isRequired,
+    callback : PropTypes.func
 }
 
 
