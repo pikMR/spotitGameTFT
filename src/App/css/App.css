@@ -8,18 +8,9 @@
   background-color: #faaa;
 }
 
-.container ul{
+.output-section ul{
   display:flex;
   justify-content: space-around;
-}
-
-.puntuacionbox {
- /*   float: right;
-    position: relative;
-    border: 6px solid;
-    border-color: cornflowerblue;
-    padding: 6px;
-    font-size: x-large;*/
 }
 
 .contentFlex{
@@ -59,8 +50,6 @@
     border-color: orange;
 }
 
-
-
 .puntuacionFinal{
     text-align: center;
     background-color: unset;
@@ -72,7 +61,7 @@
     font-size: x-large;
 }
 
-.container li:nth-child(2){
+.output-section li:nth-child(2){
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
   display: flex;
@@ -81,13 +70,13 @@
   border:none;
 }
 
-.container li:nth-child(1){
+.output-section li:nth-child(1){
   width: 60%;
   display: flex;
   justify-content: space-between;
 }
 
-.container li:nth-child(1) img{
+.output-section li:nth-child(1) img{
   display: flex;
   justify-content: space-between;
   width:75%;
@@ -188,7 +177,7 @@
     display:none;
   }
 
-  .container ul
+  .output-section ul
   {
     display:flex;
     justify-content: space-around;
@@ -199,22 +188,22 @@
     padding:0px;
   }
 
-  .container li
+  .output-section li
   {
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
 
-  .container li:nth-child(1){
+  .output-section li:nth-child(1){
     width:auto !important;
   }
 
-  .container li:nth-child(2) img{
+  .output-section li:nth-child(2) img{
     width:20% !important;
     height: 20% !important;
   }
 
-  .container li:nth-child(1) img
+  .output-section li:nth-child(1) img
   {
     display: flex;
     justify-content: space-between;
