@@ -16,17 +16,19 @@
 }
 
 .modal-body ul{
-    display:flex;
     justify-content: stretch;
+    text-align-last: right;
 }
 
 
 .modal-body li{
+    text-align: justify;
     list-style-type:none;
 }
 
 .modal-body li img {
         max-width: 64px;
+        margin-left: -5%;
 }
 
 .modal-body div{

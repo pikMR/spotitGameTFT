@@ -1,20 +1,11 @@
 import React from 'react';
-
 import '../css/Modal.css';
-let id = new Date();
-
+var id_li = new Date();
+var id_img = new Date();
 const modal = (props) => {
-    //const vacio = props.items.every((el) =>(el === undefined || el.length == 0));
-    //const vacio = ((props.items === undefined || props.items.length == 0));
-    //const clases = Array.from(new Set(props.selecteds)).map(function(){ return this.clase });
-    //console.dir(clases);
-    var _elementos = props.selecteds && Array.from(new Set(props.selecteds));
-    var _clases = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase })));
-    var _puntos = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
-        console.log("-> clases: ");
-        console.dir(_clases);
-        console.log("-> puntos: ");
-        console.dir(_puntos);
+    const _elementos = props.selecteds && Array.from(new Set(props.selecteds));
+    const _clases = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase })));
+    const _puntos = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
 
     return (
         <div>
@@ -27,39 +18,28 @@ const modal = (props) => {
                         {props.children}
                     </p>
 
-                    <ul>
+                    
                     {
-                        props.selecteds &&
-                            _puntos.map(function(comparapunto){ return
-                                _elementos.filter(x=>x.puntos === comparapunto).map((elemento,nindex)=>(
-                                        
-                                            <li key={id++}>"---- " {elemento.id}
-                                            </li>
-                                        )
-                                )
-                            })
-                    }
-                    </ul>
 
-                    <ul>
-                    {
-                    props.selecteds && Array.from(new Set(props.selecteds)).map(function(elemento,index){ return <div>
-                                            <li key={id++}>{elemento.clase}
-                                            </li>
-                                        </div> })
-                    }
-                    </ul>
-                    <ul>
-                              { 
-                                props.selecteds && Array.from(new Set(props.selecteds)).map(
-                              (elemento,index) => (
-                                    <div>
-                                        <li key={id++}><img src={elemento.imagen} />
+                        props.selecteds &&
+                                _puntos.map((puntos)=>{
+                                    const _elementos_filter = _elementos.filter(x=>x.puntos === puntos);
+                                    return(
+                                        <ul>
+                                        <li key={id_li++}>
+                                        {
+                                        
+                                        _elementos_filter.map((elem)=>{
+                                            return (<img key={id_img++} src={elem.imagen} />)
+                                        })
+                                        }
                                         </li>
-                                    </div>
-                                )
-                                )}
-                    </ul>
+                                        <li className="modal-operation-suma">({puntos} X {puntos}) X {_elementos_filter.length} = {puntos * puntos * _elementos_filter.length}</li>
+                                        </ul>
+                                    );
+                                })
+                    }
+                  
                 </div>
                 <div className="modal-footer">
                     <button className="btn-cancel" onClick={props.close}>COMPARTIR</button>

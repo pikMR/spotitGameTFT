@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Spinner from './Spinner';
 import Warning from './Warning';
-import PostData from '../../data/items-test.json';
+import PostData from '../../data/items.json';
 import { UtilShuffleArray , PasarElementos, BuscaElementoArrayPorId } from '../logic/utils';
 import ShowRound from './ShowRound';
 import PanelHistorico from './PanelHistorico';
