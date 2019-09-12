@@ -1,12 +1,15 @@
 import React from 'react';
 import '../css/Modal.css';
+import {GetImageChamp} from './Champsvg';
+
 var id_li = new Date();
+var id_ul = new Date();
 var id_img = new Date();
 const modal = (props) => {
     const _elementos = props.selecteds && Array.from(new Set(props.selecteds));
-    const _clases = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase })));
+    const _clases = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase[0] })));
     const _puntos = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
-
+    const _puntuacion_final = props.puntos;
     return (
         <div>
             <div className="modal-wrapper">
@@ -25,7 +28,7 @@ const modal = (props) => {
                                 _puntos.map((puntos)=>{
                                     const _elementos_filter = _elementos.filter(x=>x.puntos === puntos);
                                     return(
-                                        <ul>
+                                        <ul key={id_ul++}>
                                         <li key={id_li++}>
                                         {
                                         
@@ -34,12 +37,29 @@ const modal = (props) => {
                                         })
                                         }
                                         </li>
-                                        <li className="modal-operation-suma">({puntos} X {puntos}) X {_elementos_filter.length} = {puntos * puntos * _elementos_filter.length}</li>
+                                        <li className="modal-operation-suma">({puntos} X {puntos}) X {_elementos_filter.length} = <strong>{puntos * puntos * _elementos_filter.length}</strong></li>
                                         </ul>
                                     );
                                 })
                     }
-                  
+                    <ul className="clasesSeleccionadas">
+                    {
+
+                        props.selecteds &&
+                                _clases.map((clase)=>{
+                                    const _elementos_filter_class = _elementos.filter(x=>x.clase[0] === clase);
+                                    return(
+                                                (_elementos_filter_class.length > 1) &&
+                                                <li key={id_li++}>
+                                                    {GetImageChamp(clase)}
+                                                    <p>+{_elementos_filter_class.length - 1}</p>
+                                                </li>
+                                    );
+                                })
+                    }    
+                    </ul>
+
+                    <h3>Puntuación Final : {props.puntos}</h3>
                 </div>
                 <div className="modal-footer">
                     <button className="btn-cancel" onClick={props.close}>COMPARTIR</button>

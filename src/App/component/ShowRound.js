@@ -60,8 +60,9 @@ class ShowRound extends Component {
                 <Modal
               className="modal"
               selecteds = {this.props.selecteds}
+              puntos={this.props.data}
               >
-              Maybe aircrafts fly very high because they don't want to be seen in plane sight?
+              La puntuación se calcula en función de los personajes repetidos (nxn) y +1 por cada clase que consigas repetir.
             </Modal>    
             }
             

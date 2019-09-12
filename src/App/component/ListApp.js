@@ -151,6 +151,7 @@ class ListApp extends Component {
     de esta forma obtenemos los datos buscando mediante id en el array de selección y no en uno con todo el contenido.
   */
   GetRandomRow(data,isUser){
+    console.log(data);
     let sizeFlock = data.length;
     let resultado = [];
     if(sizeFlock > 0){
@@ -206,7 +207,6 @@ class ListApp extends Component {
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
           message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
-          {"--- puntos : " + puntosUsuario}
           { /*<PanelHistorico className="panelRight"/> */}
 
       </div>

@@ -9,15 +9,17 @@ class Contador extends Component {
   }
 
   componentDidMount(){
+    this._ismounted = true;
     this.timer = setInterval(this.tick, 1000);
   }
 
   componentWillUnmount() {
+    this._ismounted = false;
     clearInterval(this.timer);
   }
 
   reset(e){
-      if(e){
+      if(e && this._ismounted){
         clearInterval(this.timer);
         this.setState({seconds: 3})      
         this.timer = setInterval(this.tick, 1000);

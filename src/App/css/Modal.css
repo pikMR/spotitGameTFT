@@ -98,3 +98,13 @@
     padding: 10px;
     font-weight: bold;
 }
+
+.clasesSeleccionadas{
+    display: flex;
+    justify-content: space-around;
+    font-weight: bolder;
+}
+
+.clasesSeleccionadas li{
+    width: 8%;
+}
