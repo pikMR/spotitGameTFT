@@ -21,7 +21,7 @@ class PanelHistorico extends Component {
     if(!nextProps.stop){
 
       let elemento = nextProps.item;
-    if(!IsEmptyJson(elemento))
+    if(elemento && !IsEmptyJson(elemento))
     {          
       let _num_elemento_repetido = elemento.puntos + 1;
       if(_num_elemento_repetido === 1){

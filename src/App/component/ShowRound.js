@@ -7,24 +7,16 @@ import Modal from './Modal';
 let id = new Date();
 
 class ShowRound extends Component {
+    
     constructor(props) {
       super(props);
-      this.state = this.handleGetRandomRounds();
-    }
-
-    handleGetRandomRounds() 
-    {
-        if(this.props.items.length > 1)
-        {
-                return ({
-                    round: this.props.items[0],
-                    roundrival: this.props.items[1]
-                }); 
-        }
+      this.state = {round : props.items[0] , roundrival: props.items[1]}
     }
 
     render(){
         const { round,roundrival } = this.state;
+        const { data , mostrarPanel, selecteds } = this.props;
+
         return (
         <div className="container">
           {(!round && !roundrival) ? <h3> Fin de la partida </h3> : 
@@ -33,7 +25,7 @@ class ShowRound extends Component {
           
             {
                 <ListGroup className="output-section">
-                    {!round ? <div> Puntuación total player A : {this.props.data} </div> :
+                    {!round ? <div> Puntuación total player A : {data} </div> :
                         <ListGroupItem key={id++} className="result-array">
                             {round.map(
                                 (elemento, index) => (
@@ -56,11 +48,11 @@ class ShowRound extends Component {
                 
             }
             {
-                (!round && !roundrival) &&
+                mostrarPanel &&
                 <Modal
               className="modal"
-              selecteds = {this.props.selecteds}
-              puntos={this.props.data}
+              selecteds = {selecteds}
+              puntos={data}
               >
               La puntuación se calcula en función de los personajes repetidos (nxn) y +1 por cada clase que consigas repetir.
             </Modal>    

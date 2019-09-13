@@ -28,7 +28,8 @@ class ListApp extends Component {
             seleccionadoCpu:{},
             selectedArrayUser:[],
             puntosUsuario : 0,
-            noHistorico : false
+            noHistorico : false,
+            ultimoRound: false
         };
     }
 
@@ -173,11 +174,12 @@ class ListApp extends Component {
     @data: array con rounds (parteX), eliminamos el round quemado y lanzamos el siguiente.
   */
   GetRandomRounds(selected,data){
+    // FIX data.length > 2
     if(selected){
       let _id_selected = selected.currentTarget.alt;
       let _elemento_panel = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
       this.resSeleccionadosUser.push(_elemento_panel);
-      this.setState({resActivo: this.resParte, seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser,puntosUsuario:this.puntosUsuario,noHistorico:false});
+      this.setState({ultimoRound : (data.length === 2) , resActivo: this.resParte, seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser,puntosUsuario:this.puntosUsuario,noHistorico:false , finish : (data.length===0)});
     }
 
     let _r1 = this.GetRandomRow(data,true);
@@ -187,11 +189,10 @@ class ListApp extends Component {
   }
 
   render() {
-        const { resActivo,finish,seleccionadoUser, selectedArrayUser,puntosUsuario, noHistorico } = this.state;
+        const { resActivo,finish,seleccionadoUser, selectedArrayUser,puntosUsuario, noHistorico,ultimoRound} = this.state;
 
      return (
        <div className="general">
-       {  
           <PanelHistorico 
           className="panelLeft" 
           item={seleccionadoUser} 
@@ -199,11 +200,12 @@ class ListApp extends Component {
           callback={this.formPanelHistorico.bind(this)} 
           stop={noHistorico} 
           />
-       }
-       {
-         (resActivo && resActivo.length>1) &&
-         <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} data={puntosUsuario} selecteds={selectedArrayUser} />
-       }
+
+          {
+            ((resActivo && resActivo.length > 0) || ultimoRound || finish) &&
+            <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} data={puntosUsuario} selecteds={selectedArrayUser} mostrarPanel={finish} />  
+          }
+          
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
           message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
