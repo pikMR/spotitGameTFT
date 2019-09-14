@@ -15,7 +15,7 @@ class ShowRound extends Component {
 
     render(){
         const { round,roundrival } = this.state;
-        const { data , mostrarPanel, selecteds } = this.props;
+        const { puntosA, puntosB, mostrarPanel, selectedsUserToModal } = this.props;
 
         return (
         <div className="container">
@@ -25,7 +25,8 @@ class ShowRound extends Component {
           
             {
                 <ListGroup className="output-section">
-                    {!round ? <div> Puntuación total player A : {data} </div> :
+                    {!round ?     
+    <div className="row cf"><div className="col"><a href="#" className="button" id="button-15">Puntuación Player A</a></div></div> :
                         <ListGroupItem key={id++} className="result-array">
                             {round.map(
                                 (elemento, index) => (
@@ -35,7 +36,8 @@ class ShowRound extends Component {
                         </ListGroupItem>
                         }
     
-                    {!roundrival ? <div> Puntuación total player B : </div> :
+                    {!roundrival ? 
+    <div className="row cf"><div className="col"><a href="#" className="button" id="button-15">Puntuación Player B</a></div></div> :
                         <ListGroupItem key={id++} className="result-array">
                             {roundrival.map(
                                 (elemento, index) => (
@@ -51,8 +53,9 @@ class ShowRound extends Component {
                 mostrarPanel &&
                 <Modal
               className="modal"
-              selecteds = {selecteds}
-              puntos={data}
+              selecteds = {selectedsUserToModal}
+              puntosA = {puntosA}
+              puntosB = {puntosB}
               >
               La puntuación se calcula en función de los personajes repetidos (nxn) y +1 por cada clase que consigas repetir.
             </Modal>    
@@ -66,8 +69,8 @@ class ShowRound extends Component {
         let _activo = this.props.parentCallbackSelected(e);
         if(_activo){
         this.setState({ round: _activo[0] , roundrival: _activo[1] });
-            if(this.refs.contador){
-                this.refs.contador.reset(e);
+           if(this.refs.contador){
+              this.refs.contador.reset(e);
             }
         }else if(e){
             e.preventDefault();

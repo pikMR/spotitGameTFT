@@ -6,10 +6,10 @@ var id_li = new Date();
 var id_ul = new Date();
 var id_img = new Date();
 const modal = (props) => {
-    const _elementos = props.selecteds && Array.from(new Set(props.selecteds));
-    const _clases = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase[0] })));
-    const _puntos = props.selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
-    const _puntuacion_final = props.puntos;
+    const {selecteds,children,puntosA,puntosB,close } = props; //
+    const _elementos = selecteds && Array.from(new Set(selecteds));
+    const _clases = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase[0] })));
+    const _puntos = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
     return (
         <div>
             <div className="modal-wrapper">
@@ -18,13 +18,11 @@ const modal = (props) => {
                 </div>
                 <div className="modal-body">
                     <p>
-                        {props.children}
-                    </p>
-
-                    
+                        {children}
+                    </p>                    
                     {
 
-                        props.selecteds &&
+                        selecteds &&
                                 _puntos.map((puntos)=>{
                                     const _elementos_filter = _elementos.filter(x=>x.puntos === puntos);
                                     return(
@@ -45,7 +43,7 @@ const modal = (props) => {
                     <ul className="clasesSeleccionadas">
                     {
 
-                        props.selecteds &&
+                        selecteds &&
                                 _clases.map((clase)=>{
                                     const _elementos_filter_class = _elementos.filter(x=>x.clase[0] === clase);
                                     return(
@@ -59,10 +57,10 @@ const modal = (props) => {
                     }    
                     </ul>
 
-                    <h3>Puntuación Final : {props.puntos}</h3>
+                    <h3>Puntuación Final : {puntosA}</h3>
                 </div>
                 <div className="modal-footer">
-                    <button className="btn-cancel" onClick={props.close}>COMPARTIR</button>
+                    <button className="btn-cancel" onClick={close}>COMPARTIR</button>
                     <button className="btn-continue">REPETIR PARTIDA</button>
                 </div>
             </div>

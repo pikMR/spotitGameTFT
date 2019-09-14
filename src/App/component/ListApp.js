@@ -2,17 +2,17 @@ import React, {Component} from 'react';
 import Spinner from './Spinner';
 import Warning from './Warning';
 import PostData from '../../data/items.json';
-import { UtilShuffleArray , PasarElementos, BuscaElementoArrayPorId } from '../logic/utils';
+import { UtilShuffleArray , PasarElementos, BuscaElementoArrayPorId, ObtieneElementoRandom} from '../logic/utils';
 import ShowRound from './ShowRound';
 import PanelHistorico from './PanelHistorico';
 
 class ListApp extends Component {
     resSeleccionadosUser = [];
-    resSeleccionadosCpu = [];
+    resSeleccionadosAdversario = [];
     cuentaActivo = 0;
     resParte:[];
     resActivoUser:[];
-    resActivoCpu:[];
+    resActivoAdversario:[];
 
     constructor(props) {
         super(props);
@@ -25,14 +25,19 @@ class ListApp extends Component {
             showSpinner: false,
             finish:false,
             seleccionadoUser:{},
-            seleccionadoCpu:{},
+            seleccionadoAdversario:{},
             selectedArrayUser:[],
+            selectedArrayAdversario:[],
             puntosUsuario : 0,
+            puntosAdversario: 0,
             noHistorico : false,
             ultimoRound: false
         };
     }
 
+    /*
+        #### Loader ####
+    */
 
   ObtenerParte(data){
      return UtilShuffleArray(data.map(json=>{
@@ -79,7 +84,7 @@ class ListApp extends Component {
      /*
     Forma los elementos [image,id,clase] de 4 en 4 (round), en 4 arrays.
     resParte contiene los 4 arrays.
-    empezamos por el primer array obteniendo el round (2 selecciones: user y cpu),
+    empezamos por el primer array obteniendo el round (2 selecciones: user y adversario),
      y seguiremos el orden 1, 2, 3, 4 a sacar elementos según vayamos quemando rounds.
    */
   handleGenerate = (parteUno,parteDos,parteTres,parteCuatro) => 
@@ -91,7 +96,7 @@ class ListApp extends Component {
       let resultadoTres = UtilShuffleArray(window.spotIt(parteTres));
       let resultadoCuatro = UtilShuffleArray(window.spotIt(parteCuatro));
       this.resParte = [resultadoUno,resultadoDos,resultadoTres,resultadoCuatro];
-      let activo = this.GetRandomRounds(undefined,resultadoUno);
+      let activo = this.GetPairRound(resultadoUno);
       this.setState({
         resActivo: activo,
         showSpinner: false,
@@ -100,29 +105,40 @@ class ListApp extends Component {
     }, 0);
   }
 
-    /*
-      Función ejecutada para actualizar la puntuación desde PanelHistorico,
-      asignación desde el render parent (este mismo)
-      para uso como prop desde el hijo. ( en este caso desde componentWillReceiveProps)
-    */
-    formPanelHistorico(params) {
-        this.setState({
-          puntosUsuario : params,
-          noHistorico : true
-        })
-    }
+  /*
+      #### Logica ####
+  */
 
-    /*
-      algoritmo quemador de rounds,
-      quema rounds en 4 arrays hasta llegar a 3 elementos en cada array
-      luego agrupa en uno, y los va cogiendo de ese en concreto, 
-      a partir de ese momento el spotit ya no funciona como tal, 
-      ya que en ese array podemos sacar parejas mezcladas.
-    */
+  /*
+    Función ejecutada para actualizar la puntuación desde PanelHistorico,
+    asignación desde el render parent (este mismo)
+    para uso como prop desde el hijo. ( en este caso desde componentWillReceiveProps)
+  */
+  formPanelHistoricoUsuario(params) {
+     this.setState({
+        puntosUsuario : params,
+        noHistorico : true
+      })
+  }
+    formPanelHistoricoAdversario(params) {
+     this.setState({
+        puntosAdversario : params,
+        noHistorico : true
+      })
+  }
+
+  /*
+     algoritmo quemador de rounds,
+     quema rounds en 4 arrays hasta llegar a 3 elementos en cada array
+     luego agrupa en uno, y los va cogiendo de ese en concreto, 
+     a partir de ese momento el spotit ya no funciona como tal, 
+     ya que en ese array podemos sacar parejas mezcladas.
+  */
   callBackSelectedChamp = (selected) => {
     if(this.cuentaActivo === -1)
     {
-      return this.GetRandomRounds(selected,this.resParte);
+      this.RenderHistoricoAlPasarDeRound(selected,this.resParte.length);
+      return this.GetPairRound(this.resParte);
     }
       
     let cactivo = (this.cuentaActivo+1) % 4;
@@ -130,25 +146,59 @@ class ListApp extends Component {
     if(this.resParte[cactivo].length!=3)
     {
       this.cuentaActivo = cactivo;
-      return this.GetRandomRounds(selected,this.resParte[cactivo]);
+      this.RenderHistoricoAlPasarDeRound(selected,this.resParte[cactivo].length);
+      return this.GetPairRound(this.resParte[cactivo]);
     }else{
       let i = cactivo;
       for (; i < this.resParte.length; i++) 
       {
           if(this.resParte[i].length!=3){
             this.cuentaActivo = i;
-            return this.GetRandomRounds(selected,this.resParte[i]);
+            this.RenderHistoricoAlPasarDeRound(selected,this.resParte[i].length);
+            return this.GetPairRound(this.resParte[i]);
           }
       }
       this.resParte = PasarElementos([...this.resParte]);
       this.cuentaActivo = -1;
-      return this.GetRandomRounds(selected,this.resParte);
+      this.RenderHistoricoAlPasarDeRound(selected,this.resParte.length);
+      return this.GetPairRound(this.resParte);
     }
   }
 
-    /*
+  RenderHistoricoAlPasarDeRound(selected,restante){
+    let _elemento_panel_adv = ObtieneElementoRandom(this.resActivoAdversario);
+    let _elemento_panel_user;
+    this.resSeleccionadosAdversario.push(_elemento_panel_adv);
+
+    if(selected){
+      let _id_selected = selected.currentTarget.alt;
+      _elemento_panel_user = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
+      this.resSeleccionadosUser.push(_elemento_panel_user);
+    }
+
+      this.setState(
+        {
+          ultimoRound: (restante === 2),
+          seleccionadoUser: _elemento_panel_user,
+          selectedArrayUser: this.resSeleccionadosUser,
+          puntosUsuario: this.puntosUsuario,
+          puntosAdversario: this.puntosAdversario,
+          seleccionadoAdversario: _elemento_panel_adv,
+          selectedArrayAdversario: this.resSeleccionadosAdversario,
+          noHistorico: false,
+          finish: (restante===0)
+        }
+      );
+  }
+
+
+  GetPairRound(data){
+    return [this.GetRandomRow(data,true),this.GetRandomRow(data,false)];
+  }
+
+  /*
     Devuelve un round aleatorimante elegido dado una parteX
-    Se almacena en resActivoUser/cpu el round quemado, para luego hacer match con el seleccionado,
+    Se almacena en resActivoUser/adversario el round quemado, para luego hacer match con el seleccionado,
     de esta forma obtenemos los datos buscando mediante id en el array de selección y no en uno con todo el contenido.
   */
   GetRandomRow(data,isUser){
@@ -161,35 +211,19 @@ class ListApp extends Component {
         if(isUser){
           this.resActivoUser = resultado;  
         }else{
-          this.resActivoCpu = resultado;  
+          this.resActivoAdversario = resultado;  
         }
         
-        data.splice(index,1); // eliminamos el elemento.
-        return resultado; // devolvemos el elemento.
+        data.splice(index,1); // elimina elemento seleccionado aleatoriamente dentro de resparte(data)
+        return resultado; // devolvemos el round seleccionado aleatoriamente dentro de resparte
     }
-  }
-
-    /*
-    @selected: elemento seleccionado en el round anterior
-    @data: array con rounds (parteX), eliminamos el round quemado y lanzamos el siguiente.
-  */
-  GetRandomRounds(selected,data){
-    // FIX data.length > 2
-    if(selected){
-      let _id_selected = selected.currentTarget.alt;
-      let _elemento_panel = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
-      this.resSeleccionadosUser.push(_elemento_panel);
-      this.setState({ultimoRound : (data.length === 2) , resActivo: this.resParte, seleccionadoUser:_elemento_panel, selectedArrayUser:this.resSeleccionadosUser,puntosUsuario:this.puntosUsuario,noHistorico:false , finish : (data.length===0)});
-    }
-
-    let _r1 = this.GetRandomRow(data,true);
-    let _r2 = this.GetRandomRow(data,false);
-
-    return [_r1,_r2];
   }
 
   render() {
-        const { resActivo,finish,seleccionadoUser, selectedArrayUser,puntosUsuario, noHistorico,ultimoRound} = this.state;
+        const { 
+          resActivo,finish,seleccionadoUser,selectedArrayAdversario,
+          selectedArrayUser,puntosUsuario, noHistorico,ultimoRound,seleccionadoAdversario, puntosAdversario
+        } = this.state;
 
      return (
        <div className="general">
@@ -197,20 +231,28 @@ class ListApp extends Component {
           className="panelLeft" 
           item={seleccionadoUser} 
           arrayChamps={selectedArrayUser} 
-          callback={this.formPanelHistorico.bind(this)} 
+          callback={this.formPanelHistoricoUsuario.bind(this)} 
           stop={noHistorico} 
           />
-
           {
             ((resActivo && resActivo.length > 0) || ultimoRound || finish) &&
-            <ShowRound items={resActivo} parentCallbackSelected={this.callBackSelectedChamp} data={puntosUsuario} selecteds={selectedArrayUser} mostrarPanel={finish} />  
+            <ShowRound 
+            items={resActivo} 
+            parentCallbackSelected={this.callBackSelectedChamp} 
+            puntosA={puntosUsuario}
+            puntosB={puntosAdversario} 
+            selectedsUserToModal={selectedArrayUser} 
+            mostrarPanel={finish} />  
           }
-          
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
           message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
-          { /*<PanelHistorico className="panelRight"/> */}
-
+          <PanelHistorico className="panelRight"
+              item={seleccionadoAdversario} 
+              arrayChamps={selectedArrayAdversario} 
+              stop={noHistorico} 
+              callback={this.formPanelHistoricoAdversario.bind(this)} 
+          />
       </div>
     );
    }

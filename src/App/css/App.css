@@ -367,3 +367,61 @@
   }
 }
 
+.col {
+  display: block;
+  float:left;
+  margin: 1% 0 1% 1.6%;
+}
+
+.col:first-of-type {
+  margin-left: 0;
+}
+
+
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
+}
+
+.cf:after {
+    clear: both;
+}
+
+.cf {
+    *zoom: 1;
+}
+
+/* ALL BUTTONS */
+
+.button{
+  display: inline-block;
+  padding: 20px 50px;
+  margin: 20px 0;
+  position: relative;
+  color: #ecf0f1;
+}
+
+/* BUTTON 15 */
+
+#button-15{
+  background-color: rgba(52, 73, 94, 1);
+}
+
+#button-15:hover{
+  animation: bgchange 2s linear infinite;
+}
+
+@keyframes bgchange{
+  0%{
+    background-color: rgba(52, 73, 94, 1);
+  }
+
+  50%{
+    background-color: rgba(52, 73, 94, 0.7);
+  }
+
+  100%{
+    background-color: rgba(52, 73, 94, 1);
+  }
+}

@@ -49,8 +49,11 @@ class PanelHistorico extends Component {
           }
         }
       }
+        //let _arrayChamps = [...nextProps.arrayChamps],  _repetido = _arrayChamps.find(champ => champ.id === elemento.id);
+        let _repetido = nextProps.arrayChamps.find(champ => champ.id === elemento.id);
+        if(_repetido)
+          _repetido.puntos++;
 
-      nextProps.arrayChamps.find(champ => champ.id === elemento.id).puntos++;
 
         this.setState(
           {
