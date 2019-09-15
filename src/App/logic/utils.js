@@ -40,10 +40,18 @@ export function ArrayIsDefined(arreglo){
 }
 
 // Copia sin referencia a memoria del elemento.
-export function ObtieneElementoRandom(array){
+export function ObtieneElementoRandom(array,seleccionados){
     let index = Math.floor(Math.random() * array.length);
-    return JSON.parse(JSON.stringify(array[index]))
+    let _index_id = array[index].id;
+    let elemento_find = seleccionados.find(function(elemento){
+        return elemento.id === _index_id;
+    });
+    if(elemento_find)
+        return elemento_find;
+
+    return JSON.parse(JSON.stringify(array[index]));
 }
+
 
 export function BuscaElementoArrayPorId(id,array){
     return array.find(function(elemento){

@@ -166,8 +166,10 @@ class ListApp extends Component {
   }
 
   RenderHistoricoAlPasarDeRound(selected,restante){
-    let _elemento_panel_adv = ObtieneElementoRandom(this.resActivoAdversario);
+    let _elemento_panel_adv = ObtieneElementoRandom(this.resActivoAdversario,this.resSeleccionadosAdversario);
     let _elemento_panel_user;
+
+    //_elemento_panel_adv = BuscaElementoArrayPorId(_elemento_panel_adv.id,this.resActivoAdversario) || _elemento_panel_adv;
     this.resSeleccionadosAdversario.push(_elemento_panel_adv);
 
     if(selected){
@@ -232,7 +234,7 @@ class ListApp extends Component {
           item={seleccionadoUser} 
           arrayChamps={selectedArrayUser} 
           callback={this.formPanelHistoricoUsuario.bind(this)} 
-          stop={noHistorico} 
+          stop={noHistorico}
           />
           {
             ((resActivo && resActivo.length > 0) || ultimoRound || finish) &&
@@ -242,16 +244,18 @@ class ListApp extends Component {
             puntosA={puntosUsuario}
             puntosB={puntosAdversario} 
             selectedsUserToModal={selectedArrayUser} 
+            selectedsAdversarioToModal={selectedArrayAdversario}
             mostrarPanel={finish} />  
           }
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
           message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
-          <PanelHistorico className="panelRight"
+          <PanelHistorico 
+              className="panelRight"
               item={seleccionadoAdversario} 
               arrayChamps={selectedArrayAdversario} 
-              stop={noHistorico} 
               callback={this.formPanelHistoricoAdversario.bind(this)} 
+              stop={noHistorico} 
           />
       </div>
     );

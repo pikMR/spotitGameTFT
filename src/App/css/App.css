@@ -368,8 +368,8 @@
 }
 
 .col {
+  text-align: center;
   display: block;
-  float:left;
   margin: 1% 0 1% 1.6%;
 }
 
@@ -399,7 +399,8 @@
   padding: 20px 50px;
   margin: 20px 0;
   position: relative;
-  color: #ecf0f1;
+  color: #ecf0f1 !important;
+  font-weight: bolder;
 }
 
 /* BUTTON 15 */
