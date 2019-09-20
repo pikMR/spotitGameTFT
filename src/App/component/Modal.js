@@ -6,7 +6,7 @@ var id_li = new Date();
 var id_ul = new Date();
 var id_img = new Date();
 const modal = (props) => {
-    const {selecteds,children,puntosA,puntosB,close } = props; //
+    const {selecteds,children,puntuacionResultado,close } = props; //
     const _elementos = selecteds && Array.from(new Set(selecteds));
     const _clases = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase[0] })));
     const _puntos = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
@@ -57,7 +57,7 @@ const modal = (props) => {
                     }    
                     </ul>
 
-                    <h3>Puntuación Final : {puntosA}</h3>
+                    <h3>Puntuación Final : {puntuacionResultado}</h3>
                 </div>
                 <div className="modal-footer">
                     <button className="btn-cancel" onClick={close}>COMPARTIR</button>

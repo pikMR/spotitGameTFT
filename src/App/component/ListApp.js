@@ -175,7 +175,10 @@ class ListApp extends Component {
     if(selected){
       let _id_selected = selected.currentTarget.alt;
       _elemento_panel_user = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
-      this.resSeleccionadosUser.push(_elemento_panel_user);
+      let _epu_find = this.resSeleccionadosUser.find(function(elemento){return elemento.id == _elemento_panel_user.id;});
+      if(!_epu_find){
+        this.resSeleccionadosUser.push(_elemento_panel_user);
+      }
     }
 
       this.setState(
@@ -183,8 +186,6 @@ class ListApp extends Component {
           ultimoRound: (restante === 2),
           seleccionadoUser: _elemento_panel_user,
           selectedArrayUser: this.resSeleccionadosUser,
-          puntosUsuario: this.puntosUsuario,
-          puntosAdversario: this.puntosAdversario,
           seleccionadoAdversario: _elemento_panel_adv,
           selectedArrayAdversario: this.resSeleccionadosAdversario,
           noHistorico: false,

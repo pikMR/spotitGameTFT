@@ -17,23 +17,24 @@ class ShowRound extends Component {
             roundrival: props.items[1],
             mostrarModal: props.mostrarPanel,
             selecteds: props.selectedsUserToModal,
-            PlayerSiguiente: 'B'
+            PlayerSiguiente: 'B',
+            puntosModal: props.puntosA
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const { mostrarPanel, selectedsUserToModal } = nextProps;
+        const { mostrarPanel, selectedsUserToModal, puntosA } = nextProps;
         if(mostrarPanel){
             this.setState({
                 mostrarModal: mostrarPanel,
                 selecteds: selectedsUserToModal,
-
+                puntosModal: puntosA
             })
         }
     }
 
     render(){
-        const { round,roundrival,mostrarModal,selecteds,PlayerSiguiente} = this.state;
+        const { round,roundrival,mostrarModal,selecteds,PlayerSiguiente,puntosModal} = this.state;
         const { puntosA, puntosB } = this.props;
 
         return (
@@ -68,8 +69,7 @@ class ShowRound extends Component {
                 <Modal
               className="modal"
               selecteds={selecteds}
-              puntosA={puntosA}
-              puntosB={puntosB}
+              puntuacionResultado={puntosModal}
               >
               La puntuación se calcula en función de los personajes repetidos f(pxpxn) y +1 por cada clase que consigas repetir.
             </Modal>    
@@ -98,7 +98,8 @@ class ShowRound extends Component {
             this.setState(prevState => ({
                selecteds: (prevState.selecteds === this.props.selectedsUserToModal) ? this.props.selectedsAdversarioToModal : this.props.selectedsUserToModal,
                mostrarModal: true,
-               PlayerSiguiente: (prevState.PlayerSiguiente === 'B') ? 'A' : 'B'
+               PlayerSiguiente: (prevState.PlayerSiguiente === 'B') ? 'A' : 'B',
+               puntosModal: (prevState.PlayerSiguiente === 'B') ? this.props.puntosB : this.props.puntosA,
             })
             );
         }

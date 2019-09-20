@@ -53,10 +53,9 @@ export function ObtieneElementoRandom(array,seleccionados){
 }
 
 
-export function BuscaElementoArrayPorId(id,array){
-    return array.find(function(elemento){
-        return elemento.id == id;
-    });
+export function BuscaElementoArrayPorId(id,array)
+{
+    return JSON.parse(JSON.stringify(array.find(function(elemento){return elemento.id == id;})));
 }
 
 export function IsEmptyJson(obj){
