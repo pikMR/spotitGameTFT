@@ -1,20 +1,22 @@
 import React from 'react';
 import '../css/Modal.css';
 import {GetImageChamp} from './Champsvg';
+import {IDCOMODIN, PUNTUACION_COMODIN} from '../../data/Constantes';
 
 var id_li = new Date();
 var id_ul = new Date();
 var id_img = new Date();
 const modal = (props) => {
-    const {selecteds,children,puntuacionResultado,close } = props; //
-    const _elementos = selecteds && Array.from(new Set(selecteds));
+    const {selecteds,children,puntuacionResultado,close,mensaje } = props; //
+    const _elementos = selecteds && Array.from(new Set(selecteds)).filter(x=>x.id != IDCOMODIN);
+    const _comodines = selecteds && selecteds.filter(x=>x.id === IDCOMODIN);
     const _clases = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase[0] })));
     const _puntos = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.puntos })));
     return (
         <div>
             <div className="modal-wrapper">
                 <div className="modal-header">
-                    <h3>Congrats!</h3>
+                    <h3>{mensaje}</h3>
                 </div>
                 <div className="modal-body">
                     <p>
@@ -39,6 +41,21 @@ const modal = (props) => {
                                         </ul>
                                     );
                                 })
+                    }
+                    {
+                        _comodines && _comodines.length > 0 &&
+                                        <ul key={id_ul++}>
+                                        <li key={id_li++}>
+
+                                        {
+                                            _comodines.map((comodin)=>{
+                                                return (<img key={id_img++} src={comodin.imagen} />)
+                                            })
+                                        }
+                                        </li>
+                                        <li className="modal-operation-suma">({PUNTUACION_COMODIN} X {_comodines.length}) = <strong>{PUNTUACION_COMODIN * _comodines.length}</strong></li>
+                                        </ul>
+
                     }
                     <ul className="clasesSeleccionadas">
                     {

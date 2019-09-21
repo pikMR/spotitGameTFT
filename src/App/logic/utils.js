@@ -44,12 +44,25 @@ export function ObtieneElementoRandom(array,seleccionados){
     let index = Math.floor(Math.random() * array.length);
     let _index_id = array[index].id;
     let elemento_find = seleccionados.find(function(elemento){
-        return elemento.id === _index_id;
+        return elemento.id == _index_id;
     });
     if(elemento_find)
         return elemento_find;
 
     return JSON.parse(JSON.stringify(array[index]));
+}
+
+export function ObtieneElementoSelected(array,seleccionados,id){
+    let elemento_find = seleccionados.find(function(elemento){
+        return elemento.id == id;
+    });
+    if(elemento_find)
+        return elemento_find;
+
+    elemento_find = array.find(function(elemento){
+        return elemento.id == id;
+    });
+        return JSON.parse(JSON.stringify(elemento_find));
 }
 
 

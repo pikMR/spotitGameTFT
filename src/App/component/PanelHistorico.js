@@ -1,64 +1,57 @@
 import React, { Component, PropTypes } from 'react';
 import {GetImageChamp} from './Champsvg';
 import { IsEmptyJson } from '../logic/utils';
+import {IDCOMODIN,TOTAL_CLASES_TIPO1, PUNTUACION_COMODIN} from '../../data/Constantes';
 
 let id = new Date();
-const IDCOMODIN = 52;
+const INITIAL_STATE_ARRAY_CLASS = new Array(TOTAL_CLASES_TIPO1).fill(0);
 
 class PanelHistorico extends Component {
-  seleccionadosClass = [];
 	constructor(props) 
   {
      super(props);
-     this.state = { seleccionadosClass: [],puntuacion: 0, finish: false}
+     this.state = { seleccionadosClass: INITIAL_STATE_ARRAY_CLASS, puntuacion: 0, finish: false }
   }
 
-  puntuaRepetido = (_puntuacion) => (_puntuacion * _puntuacion); 
+  puntuaRepetido = (_puntuacion) => ((_puntuacion * 2) - 1) ; 
 
+
+  /*
+    elemento : ELEMENTO QUE VIENE CON UNAS PROPIEDADES DETERMINADAS. {imagen,id,clase,puntos}
+    elemento.puntos : NUMERO DE VECES QUE SE REPITE EL ELEMENTO.
+    sumapuntuacion : PUNTUACIÓN QUE DEBE SUMARSE A LA PUNTUACION ACUMULADA.
+    state.puntuacion : PUNTUACIÓN ACUMULADA.
+    state.seleccionadosClass : Clases acumuladas, por cada una adicional +1
+  */
   componentWillReceiveProps(nextProps) {
     if(!nextProps.stop){
-      let sumapuntuacion = 0;
       let elemento = nextProps.item;
-    if(elemento && !IsEmptyJson(elemento))
-    {          
-     let _num_elemento_repetido = elemento.puntos + 1;
-    if(_num_elemento_repetido === 1)
-    {
-      // primer +1 de elemento
-      if(elemento.id!=IDCOMODIN)
-      {
-        sumapuntuacion++;
-        if(this.seleccionadosClass[elemento.clase[0]]){
-          sumapuntuacion++;
-          this.seleccionadosClass[elemento.clase[0]]++;
-        }else{ 
-          this.seleccionadosClass[elemento.clase[0]] = 1;
-        }
-      }
-    }else{
-      // siguientes +1 del elemento
-      if(elemento.id!=IDCOMODIN)
-      {
-        let _valor_para_restar = this.puntuaRepetido(elemento.puntos);
-        sumapuntuacion = sumapuntuacion - _valor_para_restar;
-        sumapuntuacion += this.puntuaRepetido(_num_elemento_repetido); 
-      }else{
-        if(_num_elemento_repetido === 3)
+
+      if(elemento && !IsEmptyJson(elemento))
+        { 
+          elemento.puntos++;
+          let sumapuntuacion = elemento.id!=IDCOMODIN ? this.puntuaRepetido(elemento.puntos) : PUNTUACION_COMODIN; // acumulado + (2p-1)
+
+        this.setState((prevState) => 
         {
-          sumapuntuacion += 15;
-        }
+          const _lista_clases_acumuladas = prevState.seleccionadosClass.map((item,j) =>{
+              if(elemento.clase[0]===j)
+              {
+                // por cada clase adicional +1
+                if(item>0 && elemento.puntos===1)
+                  sumapuntuacion++;
+
+                return item+1;
+              }else{
+                return item;
+              }
+          });
+          return { 
+            puntuacion: (prevState.puntuacion + sumapuntuacion),
+            seleccionadosClass: _lista_clases_acumuladas
+          };
+        });
       }
-    }
-      //let _arrayChamps = [...nextProps.arrayChamps],  _repetido = _arrayChamps.find(champ => champ.id === elemento.id);
-      let _repetido = nextProps.arrayChamps.find(champ => champ.id == elemento.id);
-      if(_repetido)
-        _repetido.puntos++;
-         this.setState((prevState) => 
-         {
-             return { puntuacion: (prevState.puntuacion + sumapuntuacion) };
-         }
-       );
-     }
     }
   }
 

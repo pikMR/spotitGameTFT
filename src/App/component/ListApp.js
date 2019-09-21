@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Spinner from './Spinner';
 import Warning from './Warning';
 import PostData from '../../data/items.json';
-import { UtilShuffleArray , PasarElementos, BuscaElementoArrayPorId, ObtieneElementoRandom} from '../logic/utils';
+import { UtilShuffleArray , PasarElementos, ObtieneElementoRandom,ObtieneElementoSelected} from '../logic/utils';
 import ShowRound from './ShowRound';
 import PanelHistorico from './PanelHistorico';
 
@@ -169,16 +169,11 @@ class ListApp extends Component {
     let _elemento_panel_adv = ObtieneElementoRandom(this.resActivoAdversario,this.resSeleccionadosAdversario);
     let _elemento_panel_user;
 
-    //_elemento_panel_adv = BuscaElementoArrayPorId(_elemento_panel_adv.id,this.resActivoAdversario) || _elemento_panel_adv;
     this.resSeleccionadosAdversario.push(_elemento_panel_adv);
 
     if(selected){
-      let _id_selected = selected.currentTarget.alt;
-      _elemento_panel_user = BuscaElementoArrayPorId(_id_selected,this.resActivoUser);
-      let _epu_find = this.resSeleccionadosUser.find(function(elemento){return elemento.id == _elemento_panel_user.id;});
-      if(!_epu_find){
-        this.resSeleccionadosUser.push(_elemento_panel_user);
-      }
+      _elemento_panel_user = ObtieneElementoSelected(this.resActivoUser,this.resSeleccionadosUser,selected.currentTarget.alt);
+      this.resSeleccionadosUser.push(_elemento_panel_user);
     }
 
       this.setState(

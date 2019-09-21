@@ -64,12 +64,14 @@ class ShowRound extends Component {
                 }
             </ListGroup>   
           }
+
             {
                 mostrarModal &&
                 <Modal
               className="modal"
               selecteds={selecteds}
               puntuacionResultado={puntosModal}
+              mensaje={this.props.puntosA > this.props.puntosB ? "Has Ganado!" : "Has Perdido"}
               >
               La puntuación se calcula en función de los personajes repetidos f(pxpxn) y +1 por cada clase que consigas repetir.
             </Modal>    
