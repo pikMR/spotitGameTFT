@@ -10,18 +10,20 @@ class Header extends Component {
         <Navbar fixedTop>
             <Navbar.Header>
               <Navbar.Brand>
-                <Link to="/">Spot-It Generator</Link>
+                <Link to="/">Spot-It TeamFight Tactics Online</Link>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav pullRight>
-                <LinkContainer to="/about/">
-                  <NavItem eventKey={1}>About</NavItem>
+              {/*<LinkContainer to="/about/">
+                  <NavItem eventKey={1}>InternalLink</NavItem>
                 </LinkContainer>
-                <NavItem eventKey={2} href="http://yaodingyd.github.io">Yao</NavItem>
+              */}
+                <NavItem eventKey={2} href="https://github.com/pikMR/spotitGameTFT" target="_blank">About</NavItem>
               </Nav>
             </Navbar.Collapse>
+          
         </Navbar>   
       </div>
     );

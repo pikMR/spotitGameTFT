@@ -10,11 +10,20 @@ class PanelHistorico extends Component {
 	constructor(props) 
   {
      super(props);
-     this.state = { seleccionadosClass: INITIAL_STATE_ARRAY_CLASS, puntuacion: 0, finish: false }
+     this.state = { seleccionadosClass: INITIAL_STATE_ARRAY_CLASS, puntuacion: 0 }
   }
 
   puntuaRepetido = (_puntuacion) => ((_puntuacion * 2) - 1) ; 
 
+  shouldComponentUpdate(nextProps, nextState) {
+    let itemVacio = IsEmptyJson(nextProps.item);
+
+    if(nextProps.restart && itemVacio){
+      this.setState({puntuacion:0,seleccionadosClass:new Array(TOTAL_CLASES_TIPO1).fill(0)});
+    }
+
+    return true;
+  }
 
   /*
     elemento : ELEMENTO QUE VIENE CON UNAS PROPIEDADES DETERMINADAS. {imagen,id,clase,puntos}
@@ -55,6 +64,7 @@ class PanelHistorico extends Component {
     }
   }
 
+
   componentDidUpdate(prevProps, prevState) {
     if(!prevProps.stop)
       prevProps.callback(prevState.puntuacion);
@@ -62,12 +72,11 @@ class PanelHistorico extends Component {
 
     render() {
     	const { className,arrayChamps } = this.props;
-      const { puntuacion } = this.state;
+      const { puntuacion,restart } = this.state;
 
         return (
-        	<div className={className}>
-        		{
-        			((arrayChamps) && (arrayChamps.length>0)) &&
+        			!restart && arrayChamps && (arrayChamps.length>0) &&
+              <div className={className}>
         			<ul>
               <div key="_puntuacion" className="puntuacionFinal">{puntuacion}</div>
         			{Array.from(new Set(arrayChamps.sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1))).map(
@@ -86,8 +95,7 @@ class PanelHistorico extends Component {
                 </li>)
         			)}
         			</ul>
-        		}
-          	</div>
+        		  </div>
         );
     }
 }

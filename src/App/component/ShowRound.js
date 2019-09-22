@@ -72,8 +72,7 @@ class ShowRound extends Component {
                   className="modal"
                   selecteds={selecteds}
                   puntuacionResultado={puntosModal}
-                  mensaje={this.props.puntosA > this.props.puntosB ? "Has Ganado!" : "Has Perdido"}
-                  shared={this.compartirJuego}
+                  mensaje={this.props.puntosA > this.props.puntosB ? "Has Ganado!" : (this.props.puntosA < this.props.puntosB) ? "Has Perdido" : "Empate"}
                   restart={this.reiniciarJuego}>
                   La puntuación se calcula en función de los personajes repetidos f(pxpxn) y +1 por cada clase que consigas repetir.
               </Modal>
@@ -85,11 +84,7 @@ class ShowRound extends Component {
     reiniciarJuego = () =>{
         this.props.parentCallbackRestart();
     }
-
-    compartirJuego = () =>{
-
-    }
-
+    
     nextRound = (e) => {
         let _activo = this.props.parentCallbackSelected(e);
         if(_activo){

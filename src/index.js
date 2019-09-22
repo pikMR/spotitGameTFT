@@ -11,7 +11,7 @@ import './App/css/App.css';
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path="/" component={App} />
-    <Route path="/about/" component={About} />
+    {/*<Route path="/about/" component={About} />*/}
   </Router>
   ), document.getElementById('root')
 );

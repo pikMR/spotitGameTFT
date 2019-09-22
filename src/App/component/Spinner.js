@@ -7,7 +7,7 @@ class Spinner extends Component {
             <div>
                 <Modal show={this.props.show} backdrop="static">
                     <div className="modal-body">
-                        Result is being generated. Please wait...
+                        Loading Champions. Please wait...
                         <div className="text-center"><Glyphicon glyph="refresh" className="refresh"/></div>
                     </div>
                 </Modal>

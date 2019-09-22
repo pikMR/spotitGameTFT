@@ -72,5 +72,5 @@ export function BuscaElementoArrayPorId(id,array)
 }
 
 export function IsEmptyJson(obj){
-    return (Object.entries(obj).length === 0 && obj.constructor === Object);
+    return (obj && Object.entries(obj).length === 0 && obj.constructor === Object);
 }

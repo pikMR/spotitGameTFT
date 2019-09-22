@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Spinner from './Spinner';
 import Warning from './Warning';
-import PostData from '../../data/items-test.json';
+import PostData from '../../data/items.json';
 import { UtilShuffleArray , PasarElementos, ObtieneElementoRandom,ObtieneElementoSelected} from '../logic/utils';
 import ShowRound from './ShowRound';
 import PanelHistorico from './PanelHistorico';
@@ -31,7 +31,8 @@ class ListApp extends Component {
             puntosUsuario : 0,
             puntosAdversario: 0,
             noHistorico : false,
-            ultimoRound: false
+            ultimoRound: false,
+            restart:false
         };
     }
 
@@ -60,7 +61,7 @@ class ListApp extends Component {
     2) dividimos en 4 partes aleatorias el json, con los elementos de la forma : [image,id,clase]
     3) llamada a handleGenerate para ejecutar script spotit y render.
   */
-  componentDidMount() {this.run(); }
+  componentDidMount = () =>this.run();
 
   /*
     Forma los elementos [image,id,clase] de 4 en 4 (round), en 4 arrays.
@@ -123,9 +124,9 @@ class ListApp extends Component {
       puntosUsuario : 0,
       puntosAdversario: 0,
       noHistorico : false,
-      ultimoRound: false
+      ultimoRound: false,
+      restart: true
     },this.run);
-
   }
 
   run(){
@@ -207,7 +208,8 @@ class ListApp extends Component {
           seleccionadoAdversario: _elemento_panel_adv,
           selectedArrayAdversario: this.resSeleccionadosAdversario,
           noHistorico: false,
-          finish: (restante===0)
+          finish: (restante===0),
+          restart: false
         }
       );
   }
@@ -242,19 +244,22 @@ class ListApp extends Component {
 
   render() {
         const { 
-          resActivo,finish,seleccionadoUser,selectedArrayAdversario,
+          restart,resActivo,finish,seleccionadoUser,selectedArrayAdversario,
           selectedArrayUser,puntosUsuario, noHistorico,ultimoRound,seleccionadoAdversario, puntosAdversario
         } = this.state;
 
      return (
        <div className="general">
+
           <PanelHistorico 
           className="panelLeft" 
           item={seleccionadoUser} 
           arrayChamps={selectedArrayUser} 
           callback={this.formPanelHistoricoUsuario.bind(this)} 
           stop={noHistorico}
+          restart={restart}
           />
+        
           {
             ((resActivo && resActivo.length > 0) || ultimoRound || finish) &&
             <ShowRound 
@@ -271,12 +276,14 @@ class ListApp extends Component {
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
           message={this.state.errorMessage} callbackOwner={()=> this.setState({showError: false,loading:false})}/>
+
           <PanelHistorico 
               className="panelRight"
               item={seleccionadoAdversario} 
               arrayChamps={selectedArrayAdversario} 
               callback={this.formPanelHistoricoAdversario.bind(this)} 
-              stop={noHistorico} 
+              stop={noHistorico}
+              restart={restart}
           />
       </div>
     );
