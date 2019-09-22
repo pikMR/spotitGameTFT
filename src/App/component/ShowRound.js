@@ -33,7 +33,8 @@ class ShowRound extends Component {
         }
     }
 
-    render(){
+    render()
+    {
         const { round,roundrival,mostrarModal,selecteds,PlayerSiguiente,puntosModal} = this.state;
         const { puntosA, puntosB } = this.props;
 
@@ -65,20 +66,28 @@ class ShowRound extends Component {
             </ListGroup>   
           }
 
-            {
-                mostrarModal &&
-                <Modal
-              className="modal"
-              selecteds={selecteds}
-              puntuacionResultado={puntosModal}
-              mensaje={this.props.puntosA > this.props.puntosB ? "Has Ganado!" : "Has Perdido"}
-              >
-              La puntuación se calcula en función de los personajes repetidos f(pxpxn) y +1 por cada clase que consigas repetir.
-            </Modal>    
-            }
-            
+          {
+              mostrarModal &&
+              <Modal
+                  className="modal"
+                  selecteds={selecteds}
+                  puntuacionResultado={puntosModal}
+                  mensaje={this.props.puntosA > this.props.puntosB ? "Has Ganado!" : "Has Perdido"}
+                  shared={this.compartirJuego}
+                  restart={this.reiniciarJuego}>
+                  La puntuación se calcula en función de los personajes repetidos f(pxpxn) y +1 por cada clase que consigas repetir.
+              </Modal>
+          }
         </div>
         );
+    }
+
+    reiniciarJuego = () =>{
+        this.props.parentCallbackRestart();
+    }
+
+    compartirJuego = () =>{
+
     }
 
     nextRound = (e) => {

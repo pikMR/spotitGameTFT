@@ -7,7 +7,7 @@ var id_li = new Date();
 var id_ul = new Date();
 var id_img = new Date();
 const modal = (props) => {
-    const {selecteds,children,puntuacionResultado,close,mensaje } = props; //
+    const {selecteds,children,puntuacionResultado,close,mensaje,restart } = props; //
     const _elementos = selecteds && Array.from(new Set(selecteds)).filter(x=>x.id != IDCOMODIN);
     const _comodines = selecteds && selecteds.filter(x=>x.id === IDCOMODIN);
     const _clases = selecteds && Array.from(new Set(_elementos.map(function(elemento){ return elemento.clase[0] })));
@@ -78,7 +78,7 @@ const modal = (props) => {
                 </div>
                 <div className="modal-footer">
                     <button className="btn-cancel" onClick={close}>COMPARTIR</button>
-                    <button className="btn-continue">REPETIR PARTIDA</button>
+                    <button className="btn-continue" onClick={props.restart}>REPETIR PARTIDA</button>
                 </div>
             </div>
         </div>

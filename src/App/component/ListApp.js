@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import Spinner from './Spinner';
 import Warning from './Warning';
-import PostData from '../../data/items.json';
+import PostData from '../../data/items-test.json';
 import { UtilShuffleArray , PasarElementos, ObtieneElementoRandom,ObtieneElementoSelected} from '../logic/utils';
 import ShowRound from './ShowRound';
 import PanelHistorico from './PanelHistorico';
 
 class ListApp extends Component {
-    resSeleccionadosUser = [];
-    resSeleccionadosAdversario = [];
-    cuentaActivo = 0;
-    resParte:[];
-    resActivoUser:[];
-    resActivoAdversario:[];
+    resSeleccionadosUser;
+    resSeleccionadosAdversario;
+    cuentaActivo;
+    resParte;
+    resActivoUser;
+    resActivoAdversario;
 
     constructor(props) {
         super(props);
@@ -60,28 +60,9 @@ class ListApp extends Component {
     2) dividimos en 4 partes aleatorias el json, con los elementos de la forma : [image,id,clase]
     3) llamada a handleGenerate para ejecutar script spotit y render.
   */
-  componentDidMount() {
-    this.setState(
-    {
-      loading: true,
-    },
-    ()=>{
-      let yourArray = UtilShuffleArray(PostData);
-      let halfWayThough = Math.floor(yourArray.length/4);
-      let primeraparte = yourArray.slice(0, halfWayThough);
-      let segundaparte = yourArray.slice(halfWayThough, halfWayThough*2);
-      let terceraparte = yourArray.slice(halfWayThough*2, halfWayThough*3);
-      let cuartaparte = yourArray.slice(halfWayThough*3, yourArray.length);
-      primeraparte = this.ObtenerParte(primeraparte);
-      segundaparte = this.ObtenerParte(segundaparte);
-      terceraparte = this.ObtenerParte(terceraparte);
-      cuartaparte = this.ObtenerParte(cuartaparte);
-      this.handleGenerate(primeraparte,segundaparte,terceraparte,cuartaparte);
-    }
-    );
-  }
+  componentDidMount() {this.run(); }
 
-     /*
+  /*
     Forma los elementos [image,id,clase] de 4 en 4 (round), en 4 arrays.
     resParte contiene los 4 arrays.
     empezamos por el primer array obteniendo el round (2 selecciones: user y adversario),
@@ -125,6 +106,48 @@ class ListApp extends Component {
         puntosAdversario : params,
         noHistorico : true
       })
+  }
+
+  callbackRestart = () => {
+    this.setState({
+      loading:true,
+      resActivo:[],
+      showError: false,
+      errorMessage: '',
+      showSpinner: false,
+      finish:false,
+      seleccionadoUser:{},
+      seleccionadoAdversario:{},
+      selectedArrayUser:[],
+      selectedArrayAdversario:[],
+      puntosUsuario : 0,
+      puntosAdversario: 0,
+      noHistorico : false,
+      ultimoRound: false
+    },this.run);
+
+  }
+
+  run(){
+    //  inicialización de elementos que se compartirán el el global de la aplicación.
+    this.resSeleccionadosUser = [];
+    this.resSeleccionadosAdversario = [];
+    this.cuentaActivo = 0;
+    this.resParte=[];
+    this.resActivoUser=[];
+    this.resActivoAdversario=[];
+    // rellenamos elementos que nos darán los rounds
+    let yourArray = UtilShuffleArray(PostData);
+    let halfWayThough = Math.floor(yourArray.length/4);
+    let primeraparte = yourArray.slice(0, halfWayThough);
+    let segundaparte = yourArray.slice(halfWayThough, halfWayThough*2);
+    let terceraparte = yourArray.slice(halfWayThough*2, halfWayThough*3);
+    let cuartaparte = yourArray.slice(halfWayThough*3, yourArray.length);
+    primeraparte = this.ObtenerParte(primeraparte);
+    segundaparte = this.ObtenerParte(segundaparte);
+    terceraparte = this.ObtenerParte(terceraparte);
+    cuartaparte = this.ObtenerParte(cuartaparte);
+    this.handleGenerate(primeraparte,segundaparte,terceraparte,cuartaparte);
   }
 
   /*
@@ -241,7 +264,9 @@ class ListApp extends Component {
             puntosB={puntosAdversario} 
             selectedsUserToModal={selectedArrayUser} 
             selectedsAdversarioToModal={selectedArrayAdversario}
-            mostrarPanel={finish} />  
+            mostrarPanel={finish} 
+            parentCallbackRestart={this.callbackRestart}
+            />  
           }
           <Spinner show={this.state.showSpinner} />
           <Warning show={this.state.showError} 
